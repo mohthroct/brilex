@@ -8,9 +8,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Brilex - Si ça brille, c'est Brilex | Produits d'entretien",
+  title: "Brilex - Si ça brille, c'est Brilex | Leader Algérien des Détergents",
   description:
-    "Brilex, leader algérien des produits d'entretien. Détergents, désodorisants, insecticides et lessives de qualité supérieure. Plus de 20 ans d'expérience.",
+    "Brilex, leader algérien des produits d'entretien depuis plus de 20 ans. Détergents, désodorisants et insecticides de qualité premium. Excellence industrielle algérienne.",
   keywords: [
     "Brilex",
     "détergent Algérie",
@@ -18,15 +18,14 @@ export const metadata: Metadata = {
     "nettoyant sol",
     "désodorisant",
     "insecticide",
-    "lessive",
-    "ménage",
-    "Algérie",
+    "usine Algérie",
+    "qualité premium",
   ],
   authors: [{ name: "Brilex" }],
   openGraph: {
-    title: "Brilex - Si ça brille, c'est Brilex",
+    title: "Brilex - L'Excellence Industrielle Algérienne",
     description:
-      "Leader algérien des produits d'entretien. Qualité supérieure depuis plus de 20 ans.",
+      "Leader algérien des produits d'entretien. 20+ ans d'expérience, 48 wilayas couvertes, qualité premium.",
     type: "website",
     locale: "fr_DZ",
     siteName: "Brilex",
@@ -39,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className={inter.variable}>
+    <html lang="fr" className={`${inter.variable} scroll-smooth`}>
       <body className={`${inter.className} antialiased`}>{children}</body>
     </html>
   );
