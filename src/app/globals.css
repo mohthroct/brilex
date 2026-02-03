@@ -1,17 +1,18 @@
 @import "tailwindcss";
 
-:root {
-  --primary-dark: #0f1729;
-  --accent-yellow: #FFD700;
-  --text-white: #ffffff;
-  --text-gray: #9ca3af;
-  --border-subtle: rgba(255, 255, 255, 0.1);
+/* Theme customization for Tailwind v4 */
+@theme {
+  --color-primary-dark: #0f1729;
+  --color-primary-blue: #1a2744;
+  --color-accent-yellow: #FFD700;
+  --color-accent-blue: #0066B3;
 }
 
+/* Base styles */
 * {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 html {
@@ -19,87 +20,17 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--primary-dark);
-  color: var(--text-white);
+  background-color: #0f1729;
+  color: #ffffff;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-}
-
-/* Container */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-@media (min-width: 768px) {
-  .container {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-}
-
-/* Section spacing */
-section {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Typography */
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   line-height: 1.2;
-}
-
-/* Buttons */
-.btn-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 2rem;
-  background: var(--accent-yellow);
-  color: var(--primary-dark);
-  font-weight: 600;
-  border-radius: 9999px;
-  border: none;
-  transition: transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
-}
-
-.btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 2rem;
-  background: transparent;
-  color: var(--text-white);
-  font-weight: 600;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: transform 0.2s, border-color 0.2s;
-  cursor: pointer;
-}
-
-.btn-secondary:hover {
-  transform: scale(1.05);
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
-/* Cards */
-.card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--border-subtle);
-  border-radius: 0.75rem;
 }
 
 /* Scrollbar */
@@ -108,10 +39,20 @@ h1, h2, h3, h4 {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--primary-dark);
+  background: #0f1729;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #1a2744;
   border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a3a5a;
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(255, 215, 0, 0.3);
+  color: #ffffff;
 }
