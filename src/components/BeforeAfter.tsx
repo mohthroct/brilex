@@ -2,7 +2,8 @@
 
 import { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Sparkles, Droplets, Shield, Leaf } from "lucide-react";
+import Image from "next/image";
 
 export default function BeforeAfter() {
   const [sliderPosition, setSliderPosition] = useState(50);
@@ -11,23 +12,35 @@ export default function BeforeAfter() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging || !containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
-    setSliderPosition((x / rect.width) * 100);
-  };
-
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+  const handleMove = (clientX: number) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(e.touches[0].clientX - rect.left, rect.width));
+    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
     setSliderPosition((x / rect.width) * 100);
   };
 
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) handleMove(e.clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    handleMove(e.touches[0].clientX);
+  };
+
+  const benefits = [
+    { icon: Sparkles, title: "Brillance Éclatante", desc: "Éclat incomparable sur toutes surfaces", color: "#FFD700" },
+    { icon: Shield, title: "Protection 7 Jours", desc: "Barrière protectrice longue durée", color: "#0066B3" },
+    { icon: Leaf, title: "Formule Douce", desc: "Respectueux de votre intérieur", color: "#4CAF50" },
+    { icon: Droplets, title: "Séchage Rapide", desc: "Sans traces ni résidus", color: "#E91E8C" },
+  ];
+
   return (
-    <section ref={sectionRef} className="section-padding bg-brilex-blue overflow-hidden">
-      <div className="container mx-auto px-4">
+    <section ref={sectionRef} className="py-24 bg-gradient-to-br from-[#0a1628] via-[#0d2847] to-[#1a4a7a] overflow-hidden relative">
+      {/* Background effects */}
+      <div className="absolute inset-0 bg-[url('/images/products/product-1.jpg')] bg-cover bg-center opacity-5" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0d2847]/90 to-[#0d2847]" />
+      
+      <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -35,152 +48,166 @@ export default function BeforeAfter() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-4">
-            L&apos;Effet <span className="text-brilex-gold">Brilex</span>
+          <motion.span
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            className="inline-block px-4 py-2 rounded-full bg-yellow-500/20 text-yellow-400 font-semibold text-sm mb-4"
+          >
+            ✨ La Différence Brilex
+          </motion.span>
+          <h2 className="text-4xl md:text-6xl font-black text-white mb-4">
+            L&apos;Effet{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">
+              Brilex
+            </span>
           </h2>
-          <p className="text-white/80 text-lg max-w-2xl mx-auto">
-            Découvrez la différence qu&apos;un nettoyage professionnel peut faire
+          <p className="text-white/70 text-lg max-w-2xl mx-auto">
+            Découvrez la puissance de nos produits. Un seul passage pour une brillance exceptionnelle.
           </p>
         </motion.div>
 
-        {/* Before/After Slider */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="max-w-4xl mx-auto"
-        >
-          <div
-            ref={containerRef}
-            className="relative aspect-video rounded-3xl overflow-hidden cursor-ew-resize shadow-2xl"
-            onMouseMove={handleMouseMove}
-            onMouseDown={() => setIsDragging(true)}
-            onMouseUp={() => setIsDragging(false)}
-            onMouseLeave={() => setIsDragging(false)}
-            onTouchMove={handleTouchMove}
-            onTouchStart={() => setIsDragging(true)}
-            onTouchEnd={() => setIsDragging(false)}
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Before/After Slider */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
-            {/* Before Image (Dirty) */}
-            <div className="absolute inset-0 bg-gradient-to-br from-amber-900 to-amber-700">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="w-32 h-32 mx-auto mb-4 bg-amber-800/50 rounded-lg border-4 border-dashed border-amber-600 flex items-center justify-center">
-                    <span className="text-6xl">🪣</span>
-                  </div>
-                  <p className="text-amber-200 text-xl font-semibold">AVANT</p>
-                  <p className="text-amber-300/70 text-sm">Surface sale et terne</p>
+            <div
+              ref={containerRef}
+              className="relative aspect-[4/3] rounded-3xl overflow-hidden cursor-ew-resize shadow-2xl border-4 border-white/10"
+              onMouseMove={handleMouseMove}
+              onMouseDown={() => setIsDragging(true)}
+              onMouseUp={() => setIsDragging(false)}
+              onMouseLeave={() => setIsDragging(false)}
+              onTouchMove={handleTouchMove}
+              onTouchStart={() => setIsDragging(true)}
+              onTouchEnd={() => setIsDragging(false)}
+            >
+              {/* Before Image */}
+              <div className="absolute inset-0">
+                <Image
+                  src="/images/products/product-3.jpg"
+                  alt="Avant Brilex"
+                  fill
+                  className="object-cover grayscale brightness-50 contrast-75"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-amber-900/50 to-transparent" />
+                <div className="absolute top-6 left-6 px-4 py-2 bg-black/50 backdrop-blur rounded-full text-white font-bold">
+                  AVANT
                 </div>
               </div>
-              {/* Dirt spots */}
-              {[...Array(15)].map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute bg-amber-900/60 rounded-full"
-                  style={{
-                    width: 10 + Math.random() * 30,
-                    height: 10 + Math.random() * 30,
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                  }}
-                />
-              ))}
-            </div>
 
-            {/* After Image (Clean) */}
-            <div
-              className="absolute inset-0 bg-gradient-to-br from-sky-400 to-brilex-blue"
-              style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
-            >
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
+              {/* After Image */}
+              <div
+                className="absolute inset-0"
+                style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+              >
+                <Image
+                  src="/images/products/product-3.jpg"
+                  alt="Après Brilex"
+                  fill
+                  className="object-cover brightness-110 saturate-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-blue-500/10" />
+                <div className="absolute top-6 right-6 px-4 py-2 bg-gradient-to-r from-blue-500 to-pink-500 rounded-full text-white font-bold">
+                  APRÈS ✨
+                </div>
+                
+                {/* Sparkle effects */}
+                {[...Array(8)].map((_, i) => (
                   <motion.div
-                    animate={{ 
-                      scale: [1, 1.1, 1],
-                      rotate: [0, 5, -5, 0]
+                    key={i}
+                    className="absolute w-2 h-2 bg-white rounded-full"
+                    style={{
+                      left: `${20 + Math.random() * 60}%`,
+                      top: `${20 + Math.random() * 60}%`,
                     }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="w-32 h-32 mx-auto mb-4 bg-white/30 rounded-lg backdrop-blur flex items-center justify-center shadow-xl"
-                  >
-                    <Sparkles className="w-16 h-16 text-brilex-gold" />
-                  </motion.div>
-                  <p className="text-white text-xl font-semibold">APRÈS</p>
-                  <p className="text-white/70 text-sm">Surface brillante comme neuve</p>
-                </div>
+                    animate={{
+                      opacity: [0, 1, 0],
+                      scale: [0, 1.5, 0],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      delay: i * 0.3,
+                    }}
+                  />
+                ))}
               </div>
-              {/* Sparkles */}
-              {[...Array(20)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute bg-white rounded-full"
-                  style={{
-                    width: 4 + Math.random() * 8,
-                    height: 4 + Math.random() * 8,
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                  }}
-                  animate={{
-                    opacity: [0.3, 1, 0.3],
-                    scale: [1, 1.5, 1],
-                  }}
-                  transition={{
-                    duration: 1 + Math.random() * 2,
-                    repeat: Infinity,
-                    delay: Math.random() * 2,
-                  }}
-                />
-              ))}
-            </div>
 
-            {/* Slider Handle */}
-            <div
-              className="absolute top-0 bottom-0 w-1 bg-white shadow-lg cursor-ew-resize z-10"
-              style={{ left: `${sliderPosition}%` }}
-            >
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center">
-                <div className="flex gap-1">
-                  <div className="w-1 h-6 bg-brilex-blue rounded-full" />
-                  <div className="w-1 h-6 bg-brilex-blue rounded-full" />
+              {/* Slider Handle */}
+              <div
+                className="absolute top-0 bottom-0 w-1 bg-white shadow-lg cursor-ew-resize z-20"
+                style={{ left: `${sliderPosition}%` }}
+              >
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 bg-white rounded-full shadow-2xl flex items-center justify-center">
+                  <div className="flex gap-1">
+                    <motion.div 
+                      animate={{ x: [-2, 2, -2] }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                      className="w-1 h-8 bg-gradient-to-b from-blue-500 to-pink-500 rounded-full" 
+                    />
+                    <motion.div 
+                      animate={{ x: [2, -2, 2] }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                      className="w-1 h-8 bg-gradient-to-b from-pink-500 to-blue-500 rounded-full" 
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Instructions */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.5 }}
-            className="text-center text-white/60 mt-6"
+            <p className="text-center text-white/50 mt-4 text-sm">
+              👆 Faites glisser pour voir la magie Brilex
+            </p>
+          </motion.div>
+
+          {/* Benefits Grid */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="grid grid-cols-2 gap-4"
           >
-            👆 Faites glisser pour voir la différence
-          </motion.p>
-        </motion.div>
+            {benefits.map((benefit, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ delay: 0.5 + index * 0.1 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-white/30 transition-all cursor-default"
+              >
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                  style={{ backgroundColor: `${benefit.color}30` }}
+                >
+                  <benefit.icon className="w-6 h-6" style={{ color: benefit.color }} />
+                </div>
+                <h3 className="text-white font-bold text-lg mb-2">{benefit.title}</h3>
+                <p className="text-white/60 text-sm">{benefit.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
 
-        {/* Benefits */}
+        {/* Bottom CTA */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 max-w-4xl mx-auto"
+          transition={{ delay: 0.8 }}
+          className="text-center mt-16"
         >
-          {[
-            { icon: "✨", title: "Brillance Intense", desc: "Un éclat incomparable" },
-            { icon: "🛡️", title: "Protection Longue Durée", desc: "Jusqu'à 7 jours" },
-            { icon: "🌿", title: "Formule Douce", desc: "Respectueux des surfaces" },
-          ].map((benefit, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.6 + index * 0.1 }}
-              className="text-center"
-            >
-              <div className="text-4xl mb-3">{benefit.icon}</div>
-              <h3 className="text-xl font-bold text-white mb-1">{benefit.title}</h3>
-              <p className="text-white/70">{benefit.desc}</p>
-            </motion.div>
-          ))}
+          <motion.a
+            href="#products"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-bold rounded-full shadow-xl hover:shadow-yellow-500/30 transition-all"
+          >
+            <Sparkles className="w-5 h-5" />
+            Découvrir tous nos produits
+          </motion.a>
         </motion.div>
       </div>
     </section>

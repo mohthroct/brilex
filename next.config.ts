@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "**.brilex-dz.com",
       },
+      {
+        protocol: "https",
+        hostname: "www.brilex-dz.com",
+      },
     ],
   },
 };

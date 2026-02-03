@@ -2,40 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ChevronDown, Sparkles } from "lucide-react";
-
-// Bubble component
-const Bubble = ({ delay, size, left }: { delay: number; size: number; left: number }) => (
-  <div
-    className="bubble"
-    style={{
-      width: size,
-      height: size,
-      left: `${left}%`,
-      animationDelay: `${delay}s`,
-      animationDuration: `${8 + Math.random() * 4}s`,
-    }}
-  />
-);
-
-// Sparkle component
-const SparkleEffect = ({ x, y }: { x: number; y: number }) => (
-  <motion.div
-    className="absolute w-2 h-2 bg-brilex-gold rounded-full"
-    initial={{ scale: 0, opacity: 0 }}
-    animate={{ 
-      scale: [0, 1, 0],
-      opacity: [0, 1, 0],
-    }}
-    transition={{ duration: 0.8, ease: "easeOut" }}
-    style={{ left: x, top: y }}
-  />
-);
+import { ChevronDown, Play, Sparkles } from "lucide-react";
+import Image from "next/image";
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [bubbles, setBubbles] = useState<{ id: number; delay: number; size: number; left: number }[]>([]);
-  const [sparkles, setSparkles] = useState<{ id: number; x: number; y: number }[]>([]);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -44,163 +16,271 @@ export default function Hero() {
   
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
 
-  // Generate bubbles
-  useEffect(() => {
-    const newBubbles = Array.from({ length: 20 }, (_, i) => ({
-      id: i,
-      delay: Math.random() * 5,
-      size: 20 + Math.random() * 60,
-      left: Math.random() * 100,
-    }));
-    setBubbles(newBubbles);
-  }, []);
-
-  // Generate sparkles on mouse move
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (Math.random() > 0.9) {
-      const rect = containerRef.current?.getBoundingClientRect();
-      if (rect) {
-        const newSparkle = {
-          id: Date.now(),
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top,
-        };
-        setSparkles(prev => [...prev.slice(-10), newSparkle]);
-      }
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (rect) {
+      setMousePosition({
+        x: (e.clientX - rect.left - rect.width / 2) / 50,
+        y: (e.clientY - rect.top - rect.height / 2) / 50,
+      });
     }
   };
 
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
       onMouseMove={handleMouseMove}
-      style={{
-        background: "linear-gradient(135deg, #0066B3 0%, #004d87 50%, #003366 100%)",
-      }}
+      className="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#0a1628] via-[#0d2847] to-[#1a4a7a]"
     >
-      {/* Animated background pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
+      {/* Animated gradient background */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(233,30,140,0.15),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(0,102,179,0.2),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,215,0,0.05),transparent_70%)]" />
       </div>
 
-      {/* Bubbles */}
-      {bubbles.map((bubble) => (
-        <Bubble key={bubble.id} {...bubble} />
-      ))}
-
-      {/* Sparkles */}
-      {sparkles.map((sparkle) => (
-        <SparkleEffect key={sparkle.id} x={sparkle.x} y={sparkle.y} />
-      ))}
+      {/* Floating bubbles */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(30)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full"
+            style={{
+              width: 10 + Math.random() * 40,
+              height: 10 + Math.random() * 40,
+              left: `${Math.random() * 100}%`,
+              background: `radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), rgba(0,102,179,0.1))`,
+              border: '1px solid rgba(255,255,255,0.2)',
+            }}
+            animate={{
+              y: [0, -800],
+              x: [0, (Math.random() - 0.5) * 200],
+              opacity: [0, 0.7, 0],
+              scale: [0, 1, 0.5],
+            }}
+            transition={{
+              duration: 8 + Math.random() * 10,
+              repeat: Infinity,
+              delay: Math.random() * 10,
+              ease: "linear",
+            }}
+            initial={{ y: '100vh', opacity: 0 }}
+          />
+        ))}
+      </div>
 
       {/* Main content */}
       <motion.div
-        style={{ y, opacity }}
-        className="relative z-10 text-center px-4 max-w-6xl mx-auto"
+        style={{ y, opacity, scale }}
+        className="relative z-10 min-h-screen flex items-center"
       >
-        {/* Logo */}
-        <motion.div
-          initial={{ scale: 0, rotate: -180 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: "spring", duration: 1.5, bounce: 0.4 }}
-          className="mb-8"
-        >
-          <h1 className="text-7xl md:text-9xl font-black text-white drop-shadow-2xl">
-            <span className="relative inline-block">
-              <span
-                className="absolute inset-0 text-red-500"
-                style={{
-                  WebkitTextStroke: "4px #FFD700",
-                  textShadow: "4px 4px 0 #E53935",
-                }}
-              >
-                Brilex
-              </span>
-              <span className="relative text-red-500">Brilex</span>
-              <Sparkles className="absolute -top-4 -right-8 w-8 h-8 text-brilex-gold animate-pulse" />
-            </span>
-          </h1>
-        </motion.div>
-
-        {/* Slogan with shine effect */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-          className="mb-12"
-        >
-          <p className="text-2xl md:text-4xl text-white font-light mb-4">
-            Si ça <span className="font-bold text-brilex-gold shine-effect px-2">brille</span>, c&apos;est
-          </p>
-          <motion.p
-            className="text-4xl md:text-6xl font-bold text-white"
-            animate={{
-              textShadow: [
-                "0 0 20px rgba(255, 215, 0, 0.5)",
-                "0 0 40px rgba(255, 215, 0, 0.8)",
-                "0 0 20px rgba(255, 215, 0, 0.5)",
-              ],
-            }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            Brilex
-          </motion.p>
-        </motion.div>
-
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-        >
-          <motion.button
-            whileHover={{ scale: 1.05, boxShadow: "0 10px 40px rgba(233, 30, 140, 0.4)" }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 bg-brilex-pink text-white font-bold text-lg rounded-full shadow-lg hover:bg-pink-600 transition-colors"
-          >
-            Découvrir nos produits
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 bg-white/20 backdrop-blur text-white font-bold text-lg rounded-full border-2 border-white/50 hover:bg-white/30 transition-colors"
-          >
-            Nous contacter
-          </motion.button>
-        </motion.div>
-
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="mt-16 grid grid-cols-3 gap-8 max-w-2xl mx-auto"
-        >
-          {[
-            { value: "20+", label: "Ans d'expérience" },
-            { value: "50+", label: "Produits" },
-            { value: "48", label: "Wilayas couvertes" },
-          ].map((stat, index) => (
+        <div className="container mx-auto px-4 py-20">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left content */}
             <motion.div
-              key={index}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 1.4 + index * 0.1, type: "spring" }}
-              className="text-center"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center lg:text-left"
             >
-              <p className="text-3xl md:text-4xl font-bold text-brilex-gold">{stat.value}</p>
-              <p className="text-sm md:text-base text-white/80">{stat.label}</p>
+              {/* Badge */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 mb-6"
+              >
+                <Sparkles className="w-4 h-4 text-yellow-400" />
+                <span className="text-white/90 text-sm font-medium">Leader Algérien depuis 20+ ans</span>
+              </motion.div>
+
+              {/* Logo/Title */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+                className="mb-6"
+              >
+                <Image
+                  src="/images/products/logo.png"
+                  alt="Brilex Logo"
+                  width={350}
+                  height={120}
+                  className="mx-auto lg:mx-0 drop-shadow-2xl"
+                  priority
+                />
+              </motion.div>
+
+              {/* Slogan */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="mb-8"
+              >
+                <p className="text-3xl md:text-5xl font-light text-white mb-2">
+                  Si ça{" "}
+                  <span className="relative inline-block">
+                    <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500">
+                      brille
+                    </span>
+                    <motion.span
+                      className="absolute -inset-1 bg-gradient-to-r from-yellow-400/30 to-transparent blur-lg"
+                      animate={{ opacity: [0.5, 1, 0.5] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                  </span>
+                  , c&apos;est
+                </p>
+                <p className="text-4xl md:text-6xl font-black text-white">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">
+                    BRILEX
+                  </span>
+                </p>
+              </motion.div>
+
+              {/* Description */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.7 }}
+                className="text-white/70 text-lg mb-8 max-w-lg mx-auto lg:mx-0"
+              >
+                Produits d&apos;entretien de qualité supérieure pour un intérieur qui brille. 
+                Détergents, désodorisants, insecticides - Excellence algérienne.
+              </motion.p>
+
+              {/* CTA Buttons */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.9 }}
+                className="flex flex-wrap gap-4 justify-center lg:justify-start"
+              >
+                <motion.a
+                  href="#products"
+                  whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(233,30,140,0.3)" }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-gradient-to-r from-pink-500 to-pink-600 text-white font-bold text-lg rounded-full shadow-xl hover:shadow-pink-500/30 transition-all flex items-center gap-2"
+                >
+                  <Play className="w-5 h-5" />
+                  Découvrir nos produits
+                </motion.a>
+                <motion.a
+                  href="#contact"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-white/10 backdrop-blur text-white font-bold text-lg rounded-full border border-white/30 hover:bg-white/20 transition-all"
+                >
+                  Nous contacter
+                </motion.a>
+              </motion.div>
+
+              {/* Stats */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.1 }}
+                className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-white/10"
+              >
+                {[
+                  { value: "20+", label: "Années d'expérience" },
+                  { value: "50+", label: "Produits de qualité" },
+                  { value: "48", label: "Wilayas couvertes" },
+                ].map((stat, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.2 + i * 0.1 }}
+                    className="text-center"
+                  >
+                    <p className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-200">
+                      {stat.value}
+                    </p>
+                    <p className="text-white/60 text-sm">{stat.label}</p>
+                  </motion.div>
+                ))}
+              </motion.div>
             </motion.div>
-          ))}
-        </motion.div>
+
+            {/* Right - Product showcase */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="relative"
+              style={{
+                transform: `perspective(1000px) rotateY(${mousePosition.x}deg) rotateX(${-mousePosition.y}deg)`,
+              }}
+            >
+              {/* Main product image */}
+              <motion.div
+                animate={{
+                  y: [0, -20, 0],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="relative z-10"
+              >
+                <div className="relative w-full max-w-lg mx-auto">
+                  {/* Glow effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-pink-500/30 to-blue-500/30 blur-3xl rounded-full transform scale-110" />
+                  
+                  <Image
+                    src="/images/products/product-1.jpg"
+                    alt="Brilex Products"
+                    width={600}
+                    height={600}
+                    className="relative z-10 rounded-3xl shadow-2xl"
+                    priority
+                  />
+                  
+                  {/* Floating badge */}
+                  <motion.div
+                    animate={{ y: [0, -10, 0], rotate: [0, 5, 0] }}
+                    transition={{ duration: 3, repeat: Infinity }}
+                    className="absolute -top-4 -right-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-black font-bold px-4 py-2 rounded-full shadow-lg text-sm"
+                  >
+                    ⭐ Qualité Premium
+                  </motion.div>
+                </div>
+              </motion.div>
+
+              {/* Floating smaller products */}
+              <motion.div
+                animate={{ y: [0, 15, 0], x: [0, 10, 0] }}
+                transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
+                className="absolute -left-10 top-1/4 w-32 h-32 z-20"
+              >
+                <Image
+                  src="/images/products/gel-1.jpg"
+                  alt="Gel Brilex"
+                  fill
+                  className="object-cover rounded-2xl shadow-xl border-2 border-white/20"
+                />
+              </motion.div>
+
+              <motion.div
+                animate={{ y: [0, -15, 0], x: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, delay: 1 }}
+                className="absolute -right-5 bottom-1/4 w-28 h-28 z-20"
+              >
+                <Image
+                  src="/images/products/spray-1.jpg"
+                  alt="Spray Brilex"
+                  fill
+                  className="object-cover rounded-2xl shadow-xl border-2 border-white/20"
+                />
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
       </motion.div>
 
       {/* Scroll indicator */}
@@ -208,13 +288,16 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, y: [0, 10, 0] }}
         transition={{ delay: 2, duration: 1.5, repeat: Infinity }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white z-20"
       >
-        <ChevronDown className="w-8 h-8" />
+        <div className="flex flex-col items-center gap-2">
+          <span className="text-sm text-white/60">Découvrir</span>
+          <ChevronDown className="w-6 h-6" />
+        </div>
       </motion.div>
 
-      {/* Gradient overlay at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
+      {/* Bottom gradient */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent z-10" />
     </section>
   );
 }
