@@ -30,8 +30,8 @@ export default function Header() {
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="w-full max-w-[1200px] mx-auto px-4 md:px-8">
+        <div className="flex items-center justify-between h-16 w-full">
           {/* Logo */}
           <Link href="/">
             <Image

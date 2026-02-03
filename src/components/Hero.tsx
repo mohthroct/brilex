@@ -11,9 +11,9 @@ export default function Hero() {
   ];
 
   return (
-    <section className="min-h-screen flex items-center bg-[#0f1729] pt-16">
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8 py-20">
-        <div className="flex flex-col items-center text-center">
+    <section className="min-h-screen flex items-center justify-center bg-[#0f1729] pt-16">
+      <div className="w-full max-w-[1200px] mx-auto px-4 md:px-8 py-20">
+        <div className="flex flex-col items-center text-center w-full">
           {/* Logo */}
           <Image
             src="/images/products/logo.png"
