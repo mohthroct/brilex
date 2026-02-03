@@ -2,14 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
-const navLinks = [
-  { href: "#", label: "Accueil" },
-  { href: "#products", label: "Produits" },
-  { href: "#about", label: "À Propos" },
-  { href: "#contact", label: "Contact" },
+const navItems = [
+  { name: "Accueil", href: "#" },
+  { name: "Produits", href: "#products" },
+  { name: "À Propos", href: "#about" },
+  { name: "Contact", href: "#contact" },
 ];
 
 export default function Header() {
@@ -18,131 +19,101 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <>
-      <motion.header
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? "bg-white/90 backdrop-blur-lg shadow-lg py-3"
-            : "bg-transparent py-6"
-        }`}
-      >
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-2">
-              <motion.div
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.5 }}
-                className="relative"
-              >
-                <span className={`text-3xl md:text-4xl font-black ${
-                  isScrolled ? "text-red-500" : "text-white"
-                }`}
-                style={{
-                  textShadow: isScrolled ? "none" : "2px 2px 0 #FFD700",
-                }}
-                >
-                  Brilex
-                </span>
-                <Sparkles className={`absolute -top-2 -right-4 w-4 h-4 ${
-                  isScrolled ? "text-brilex-gold" : "text-brilex-gold"
-                }`} />
-              </motion.div>
-            </Link>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-[#0f1729]/95 backdrop-blur-xl border-b border-white/10 shadow-lg"
+          : "bg-[#0f1729]/80 backdrop-blur-md"
+      }`}
+    >
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <Link href="/" className="relative z-10">
+            <Image
+              src="/images/products/logo.png"
+              alt="Brilex"
+              width={120}
+              height={40}
+              className="h-10 w-auto"
+              priority
+            />
+          </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-8">
-              {navLinks.map((link, index) => (
-                <motion.a
-                  key={index}
-                  href={link.href}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className={`font-medium transition-colors relative group ${
-                    isScrolled
-                      ? "text-gray-700 hover:text-brilex-blue"
-                      : "text-white hover:text-brilex-gold"
-                  }`}
-                >
-                  {link.label}
-                  <span className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all group-hover:w-full ${
-                    isScrolled ? "bg-brilex-blue" : "bg-brilex-gold"
-                  }`} />
-                </motion.a>
-              ))}
-              <motion.a
-                href="#contact"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-6 py-2 bg-brilex-pink text-white font-semibold rounded-full hover:bg-pink-600 transition-colors shadow-lg"
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-8">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="text-white/80 hover:text-white font-medium transition-colors relative group"
               >
-                Contactez-nous
-              </motion.a>
-            </nav>
+                {item.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#FFD700] transition-all duration-300 group-hover:w-full" />
+              </Link>
+            ))}
+          </nav>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`md:hidden p-2 rounded-lg ${
-                isScrolled ? "text-gray-700" : "text-white"
-              }`}
+          {/* CTA Button */}
+          <div className="hidden md:block">
+            <Link
+              href="#contact"
+              className="flex items-center gap-2 px-6 py-3 bg-[#FFD700] text-[#0f1729] font-bold rounded-full hover:bg-[#ffdf33] transition-all hover:shadow-lg hover:shadow-yellow-500/20 hover:-translate-y-0.5"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+              <Phone className="w-4 h-4" />
+              Contactez-nous
+            </Link>
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden relative z-10 p-2 text-white"
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
         </div>
-      </motion.header>
+      </div>
 
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-x-0 top-16 z-40 md:hidden"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden bg-[#0f1729] border-t border-white/10"
           >
-            <div className="bg-white shadow-xl rounded-b-3xl mx-4 p-6">
-              <nav className="flex flex-col gap-4">
-                {navLinks.map((link, index) => (
-                  <motion.a
-                    key={index}
-                    href={link.href}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-gray-700 font-medium py-2 hover:text-brilex-blue transition-colors"
-                  >
-                    {link.label}
-                  </motion.a>
-                ))}
-                <motion.a
-                  href="#contact"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.4 }}
+            <nav className="container mx-auto px-4 py-6 flex flex-col gap-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full py-3 bg-brilex-pink text-white font-semibold rounded-xl text-center hover:bg-pink-600 transition-colors"
+                  className="text-white/80 hover:text-white font-medium py-2 transition-colors"
                 >
-                  Contactez-nous
-                </motion.a>
-              </nav>
-            </div>
+                  {item.name}
+                </Link>
+              ))}
+              <Link
+                href="#contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-[#FFD700] text-[#0f1729] font-bold rounded-full mt-2"
+              >
+                <Phone className="w-4 h-4" />
+                Contactez-nous
+              </Link>
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </header>
   );
 }

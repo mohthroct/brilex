@@ -1,5 +1,3 @@
-"use client";
-
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Products from "@/components/Products";
@@ -8,22 +6,18 @@ import About from "@/components/About";
 import Distribution from "@/components/Distribution";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
-import LoadingScreen from "@/components/LoadingScreen";
 
 export default function Home() {
   return (
-    <>
-      <LoadingScreen />
+    <main className="min-h-screen bg-[#0f1729]">
       <Header />
-      <main>
-        <Hero />
-        <Products />
-        <BeforeAfter />
-        <About />
-        <Distribution />
-        <Contact />
-      </main>
+      <Hero />
+      <Products />
+      <BeforeAfter />
+      <About />
+      <Distribution />
+      <Contact />
       <Footer />
-    </>
+    </main>
   );
 }
