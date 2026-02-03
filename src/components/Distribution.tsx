@@ -1,109 +1,78 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
 import { MapPin, Truck, Package, CheckCircle } from "lucide-react";
 
 export default function Distribution() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
-
   const features = [
-    { icon: Truck, title: "Livraison Nationale", description: "Présents dans les 48 wilayas d'Algérie" },
-    { icon: Package, title: "Stock Permanent", description: "Disponibilité garantie de tous nos produits" },
-    { icon: CheckCircle, title: "Service Fiable", description: "Délais respectés et suivi de commande" },
+    { icon: Truck, title: "Livraison Nationale", description: "48 wilayas couvertes" },
+    { icon: Package, title: "Stock Permanent", description: "Disponibilité garantie" },
+    { icon: CheckCircle, title: "Service Fiable", description: "Délais respectés" },
   ];
 
   const regions = [
-    { name: "Centre", wilayas: "Alger, Blida, Tipaza, Boumerdès, Tizi Ouzou, Bouira, Médéa" },
-    { name: "Est", wilayas: "Constantine, Annaba, Sétif, Batna, Biskra, Jijel, Béjaïa" },
-    { name: "Ouest", wilayas: "Oran, Tlemcen, Mostaganem, Mascara, Sidi Bel Abbès" },
-    { name: "Sud", wilayas: "Ouargla, Ghardaïa, Béchar, Adrar, Tamanrasset" },
+    { name: "Centre", wilayas: "Alger, Blida, Tipaza, Boumerdès, Tizi Ouzou" },
+    { name: "Est", wilayas: "Constantine, Annaba, Sétif, Batna, Béjaïa" },
+    { name: "Ouest", wilayas: "Oran, Tlemcen, Mostaganem, Mascara" },
+    { name: "Sud", wilayas: "Ouargla, Ghardaïa, Béchar, Adrar" },
   ];
 
   return (
-    <section ref={sectionRef} className="py-24 bg-gradient-to-b from-[#1a2744] to-[#0f1729]">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <span className="inline-block px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/70 text-sm font-medium mb-6">
-            Distribution
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+    <section className="py-20 bg-[#1a2744]">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Partout en <span className="text-[#FFD700]">Algérie</span>
           </h2>
-          <p className="text-white/50 text-lg max-w-2xl mx-auto">
-            Un réseau de distribution solide couvrant tout le territoire national pour vous servir au plus près.
+          <p className="text-gray-400 max-w-[600px] mx-auto">
+            Un réseau de distribution solide couvrant tout le territoire national.
           </p>
-        </motion.div>
+        </div>
 
         {/* Features */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {features.map((feature, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.3 + index * 0.1 }}
-              className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center hover:bg-white/[0.07] hover:border-white/20 transition-all"
+              className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-6 text-center"
             >
               <div className="w-12 h-12 rounded-xl bg-[#FFD700]/10 flex items-center justify-center mx-auto mb-4">
                 <feature.icon className="w-6 h-6 text-[#FFD700]" />
               </div>
-              <h3 className="text-white font-semibold text-lg mb-2">{feature.title}</h3>
-              <p className="text-white/50 text-sm">{feature.description}</p>
-            </motion.div>
+              <h3 className="text-white font-semibold mb-1">{feature.title}</h3>
+              <p className="text-gray-400 text-sm">{feature.description}</p>
+            </div>
           ))}
-        </motion.div>
+        </div>
 
         {/* Regions */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="bg-white/5 border border-white/10 rounded-2xl p-8"
-        >
+        <div className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-8">
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-[#FFD700]/10 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-lg bg-[#FFD700]/10 flex items-center justify-center">
               <MapPin className="w-5 h-5 text-[#FFD700]" />
             </div>
-            <h3 className="text-xl font-bold text-white">Zones de Couverture</h3>
+            <h3 className="text-lg font-bold text-white">Zones de Couverture</h3>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {regions.map((region, index) => (
-              <div key={index} className="bg-white/5 rounded-xl p-4">
+              <div key={index} className="bg-white/5 rounded-lg p-4">
                 <h4 className="text-[#FFD700] font-semibold mb-2">{region.name}</h4>
-                <p className="text-white/50 text-sm leading-relaxed">{region.wilayas}</p>
+                <p className="text-gray-400 text-sm">{region.wilayas}</p>
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.6 }}
-          className="text-center mt-12"
-        >
+        <div className="text-center mt-12">
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-[#FFD700] text-[#0f1729] font-bold rounded-full hover:bg-[#ffdf33] transition-all hover:shadow-lg hover:shadow-yellow-500/20"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-[#FFD700] text-[#0f1729] font-semibold rounded-full hover:scale-105 transition-transform"
           >
             Devenir Distributeur
           </a>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

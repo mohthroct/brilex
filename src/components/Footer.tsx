@@ -22,35 +22,34 @@ export default function Footer() {
   ];
 
   const socialLinks = [
-    { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
+    { icon: Facebook, href: "#" },
+    { icon: Instagram, href: "#" },
+    { icon: Linkedin, href: "#" },
   ];
 
   return (
-    <footer className="bg-[#0a1018] border-t border-white/5">
-      <div className="container mx-auto px-4 py-16">
+    <footer className="bg-[#0a1018] border-t border-white/10">
+      <div className="max-w-[1200px] mx-auto px-4 md:px-8 py-16">
+        {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Brand */}
+          {/* Logo & Description */}
           <div>
             <Image
               src="/images/products/logo.png"
               alt="Brilex"
-              width={120}
-              height={40}
-              className="h-10 w-auto mb-6"
+              width={100}
+              height={32}
+              className="h-8 w-auto mb-4"
             />
-            <p className="text-white/50 text-sm leading-relaxed mb-6">
-              Leader algérien des produits d&apos;entretien ménager depuis plus de 20 ans. 
-              Qualité, innovation et excellence.
+            <p className="text-gray-400 text-sm mb-6">
+              Leader algérien des produits d&apos;entretien ménager depuis plus de 20 ans.
             </p>
             <div className="flex gap-3">
               {socialLinks.map((social, index) => (
                 <a
                   key={index}
                   href={social.href}
-                  aria-label={social.label}
-                  className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/50 hover:text-[#FFD700] hover:border-[#FFD700]/30 hover:bg-[#FFD700]/10 transition-all"
+                  className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#FFD700] hover:border-[#FFD700]/30 transition-colors"
                 >
                   <social.icon className="w-4 h-4" />
                 </a>
@@ -60,13 +59,13 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-white font-semibold mb-6">Liens Rapides</h3>
+            <h3 className="text-white font-semibold mb-4">Liens Rapides</h3>
             <ul className="space-y-3">
               {quickLinks.map((link, index) => (
                 <li key={index}>
                   <Link
                     href={link.href}
-                    className="text-white/50 hover:text-[#FFD700] transition-colors text-sm"
+                    className="text-gray-400 hover:text-[#FFD700] text-sm transition-colors"
                   >
                     {link.name}
                   </Link>
@@ -77,13 +76,13 @@ export default function Footer() {
 
           {/* Products */}
           <div>
-            <h3 className="text-white font-semibold mb-6">Nos Produits</h3>
+            <h3 className="text-white font-semibold mb-4">Nos Produits</h3>
             <ul className="space-y-3">
               {products.map((product, index) => (
                 <li key={index}>
                   <Link
                     href={product.href}
-                    className="text-white/50 hover:text-[#FFD700] transition-colors text-sm"
+                    className="text-gray-400 hover:text-[#FFD700] text-sm transition-colors"
                   >
                     {product.name}
                   </Link>
@@ -94,35 +93,28 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-white font-semibold mb-6">Contact</h3>
-            <ul className="space-y-4">
+            <h3 className="text-white font-semibold mb-4">Contact</h3>
+            <ul className="space-y-3">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-[#FFD700] mt-0.5 flex-shrink-0" />
-                <span className="text-white/50 text-sm">Zone Industrielle, Alger, Algérie</span>
+                <span className="text-gray-400 text-sm">Zone Industrielle, Alger</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-[#FFD700] flex-shrink-0" />
-                <a href="tel:+213XXXXXXXX" className="text-white/50 hover:text-[#FFD700] transition-colors text-sm">
-                  +213 XX XX XX XX
-                </a>
+                <span className="text-gray-400 text-sm">+213 XX XX XX XX</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-[#FFD700] flex-shrink-0" />
-                <a href="mailto:contact@brilex-dz.com" className="text-white/50 hover:text-[#FFD700] transition-colors text-sm">
-                  contact@brilex-dz.com
-                </a>
+                <span className="text-gray-400 text-sm">contact@brilex-dz.com</span>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-white/5 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-white/40 text-sm">
+        <div className="border-t border-white/10 mt-12 pt-8 text-center">
+          <p className="text-gray-500 text-sm">
             © {currentYear} Brilex. Tous droits réservés.
-          </p>
-          <p className="text-white/30 text-xs">
-            Si ça brille, c&apos;est Brilex ✨
           </p>
         </div>
       </div>
