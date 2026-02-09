@@ -7,10 +7,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navItems = [
-  { name: "Accueil", href: "#" },
-  { name: "Produits", href: "#products" },
-  { name: "Notre Usine", href: "#factory" },
-  { name: "Contact", href: "#contact" },
+  { name: "Accueil", href: "/" },
+  { name: "Produits", href: "/produits" },
+  { name: "Notre Usine", href: "/#factory" },
+  { name: "Contact", href: "/#contact" },
 ];
 
 export default function Header() {
@@ -81,14 +81,14 @@ export default function Header() {
             className="hidden md:block"
           >
             <Link
-              href="#contact"
+              href="/partenaire"
               className="group relative px-6 py-2.5 rounded-full overflow-hidden"
             >
               <span className="absolute inset-0 bg-gradient-to-r from-[#E91E8C] to-[#00A3E0]" />
               <span className="absolute inset-0 bg-gradient-to-r from-[#00A3E0] to-[#E91E8C] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <span className="relative flex items-center gap-2 text-white text-sm font-semibold">
                 <Sparkles className="w-4 h-4" />
-                Contactez-nous
+                Devenir Partenaire
               </span>
             </Link>
           </motion.div>
@@ -130,11 +130,11 @@ export default function Header() {
                 </motion.div>
               ))}
               <Link
-                href="#contact"
+                href="/partenaire"
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="mt-4 px-6 py-3 bg-gradient-to-r from-[#E91E8C] to-[#00A3E0] rounded-full text-white text-sm font-semibold text-center"
               >
-                Contactez-nous
+                Devenir Partenaire
               </Link>
             </nav>
           </motion.div>

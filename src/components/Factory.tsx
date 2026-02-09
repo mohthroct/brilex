@@ -213,7 +213,7 @@ export default function FactorySection() {
           className="text-center mt-20"
         >
           <motion.a
-            href="#contact"
+            href="/partenaire"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#FFD700] to-[#FFA500] text-black font-bold rounded-full"
