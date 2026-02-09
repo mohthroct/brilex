@@ -5,8 +5,16 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Sparkles, ArrowRight, ChevronDown } from "lucide-react";
 import Image from "next/image";
 
+const heroImages = [
+  { src: "/images/hero-1.jpg", alt: "Brilex — Splash of freshness" },
+  { src: "/images/hero-2.jpg", alt: "Brilex — The sparkling home" },
+  { src: "/images/hero-3.jpg", alt: "Brilex — Industrial power" },
+  { src: "/images/hero-4.jpg", alt: "Brilex — Product lineup" },
+];
+
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [current, setCurrent] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const { scrollYProgress } = useScroll({
@@ -16,27 +24,45 @@ export default function Hero() {
 
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const imgScale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
 
+  // Auto-rotate every 3 seconds
   useEffect(() => {
     setIsLoaded(true);
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % heroImages.length);
+    }, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <section ref={containerRef} className="relative min-h-screen overflow-hidden">
-      {/* Background image with parallax */}
-      <motion.div style={{ scale: imgScale }} className="absolute inset-0 z-0">
-        <Image
-          src="/images/hero-bg.jpg"
-          alt="Brilex Premium Cleaning Products"
-          fill
-          className="object-cover"
-          priority
-          sizes="100vw"
-        />
-      </motion.div>
+      {/* Background images with crossfade + Ken Burns */}
+      {heroImages.map((img, index) => (
+        <motion.div
+          key={index}
+          className="absolute inset-0 z-0"
+          initial={false}
+          animate={{
+            opacity: current === index ? 1 : 0,
+            scale: current === index ? [1, 1.08] : 1,
+          }}
+          transition={{
+            opacity: { duration: 1, ease: "easeInOut" },
+            scale: { duration: 3, ease: "linear" },
+          }}
+        >
+          <Image
+            src={img.src}
+            alt={img.alt}
+            fill
+            className="object-cover"
+            priority={index === 0}
+            sizes="100vw"
+          />
+        </motion.div>
+      ))}
 
-      {/* Gradient overlay — from left for text readability */}
+      {/* Gradient overlay */}
       <div className="absolute inset-0 z-[1] bg-gradient-to-r from-white/90 via-white/60 to-transparent" />
 
       {/* Content */}
@@ -51,10 +77,12 @@ export default function Hero() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-neutral-200 shadow-sm mb-8"
             >
               <Sparkles className="w-4 h-4 text-[#FFD700]" />
-              <span className="text-neutral-600 text-sm font-medium">Leader Algérien depuis +20 ans</span>
+              <span className="text-neutral-600 text-sm font-medium">
+                Leader Algérien depuis +20 ans
+              </span>
             </motion.div>
 
-            {/* Main heading */}
+            {/* Heading */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={isLoaded ? { opacity: 1, y: 0 } : {}}
@@ -82,7 +110,7 @@ export default function Hero() {
               qui transforment chaque surface en miroir de brillance.
             </motion.p>
 
-            {/* CTA Buttons */}
+            {/* CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isLoaded ? { opacity: 1, y: 0 } : {}}
@@ -90,7 +118,7 @@ export default function Hero() {
               className="flex flex-wrap gap-4"
             >
               <motion.a
-                href="#products"
+                href="/produits"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
                 className="group relative px-8 py-4 bg-gradient-to-r from-[#E91E8C] to-[#00A3E0] rounded-full font-semibold text-white overflow-hidden shadow-lg shadow-[#E91E8C]/20"
@@ -100,9 +128,8 @@ export default function Hero() {
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </motion.a>
-
               <motion.a
-                href="#factory"
+                href="/#factory"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.98 }}
                 className="px-8 py-4 rounded-full font-semibold text-neutral-700 bg-white/80 backdrop-blur-sm border border-neutral-200 hover:bg-white transition-colors shadow-sm"
@@ -133,12 +160,28 @@ export default function Hero() {
         </div>
       </motion.div>
 
+      {/* Dot indicators */}
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        {heroImages.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrent(index)}
+            className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+              current === index
+                ? "bg-[#E91E8C] w-8"
+                : "bg-neutral-400/50 hover:bg-neutral-400"
+            }`}
+            aria-label={`Slide ${index + 1}`}
+          />
+        ))}
+      </div>
+
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, y: [0, 10, 0] }}
         transition={{ delay: 2, duration: 2, repeat: Infinity }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
       >
         <div className="flex flex-col items-center gap-2 text-neutral-400">
           <span className="text-xs uppercase tracking-widest">Scroll</span>
@@ -146,7 +189,7 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* Bottom gradient fade to white */}
+      {/* Bottom fade */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent z-10" />
     </section>
   );
