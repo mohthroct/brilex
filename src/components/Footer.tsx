@@ -12,7 +12,7 @@ export default function Footer() {
     { name: "Accueil", href: "#" },
     { name: "Nos Produits", href: "#products" },
     { name: "Notre Usine", href: "#factory" },
-    { name: "Contact", href: "#contact" },
+    { name: "Contact", href: "/contact" },
   ];
 
   const products = [

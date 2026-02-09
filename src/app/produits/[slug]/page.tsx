@@ -106,7 +106,7 @@ export default function ProductDetailPage() {
             </div>
 
             <motion.a
-              href="#contact"
+              href="/contact"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="inline-flex items-center gap-3 px-8 py-4 text-white font-semibold rounded-xl shadow-lg transition-shadow hover:shadow-xl"

@@ -1,7 +1,6 @@
 import Hero from "@/components/Hero";
 import Products from "@/components/Products";
 import Factory from "@/components/Factory";
-import Contact from "@/components/Contact";
 
 export default function Home() {
   return (
@@ -9,7 +8,6 @@ export default function Home() {
       <Hero />
       <Products />
       <Factory />
-      <Contact />
     </main>
   );
 }

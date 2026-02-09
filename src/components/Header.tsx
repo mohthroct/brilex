@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -10,7 +10,8 @@ const navItems = [
   { name: "Accueil", href: "/" },
   { name: "Produits", href: "/produits" },
   { name: "Notre Usine", href: "/#factory" },
-  { name: "Contact", href: "/#contact" },
+  { name: "B2B", href: "/partenaire" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export default function Header() {
@@ -82,14 +83,9 @@ export default function Header() {
           >
             <Link
               href="/partenaire"
-              className="group relative px-6 py-2.5 rounded-full overflow-hidden"
+              className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#E91E8C] to-[#00A3E0] text-white text-sm font-semibold hover:shadow-lg hover:shadow-[#E91E8C]/20 transition-all"
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-[#E91E8C] to-[#00A3E0]" />
-              <span className="absolute inset-0 bg-gradient-to-r from-[#00A3E0] to-[#E91E8C] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <span className="relative flex items-center gap-2 text-white text-sm font-semibold">
-                <Sparkles className="w-4 h-4" />
-                Devenir Partenaire
-              </span>
+              Devenir Partenaire
             </Link>
           </motion.div>
 
