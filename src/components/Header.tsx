@@ -30,7 +30,7 @@ export default function Header() {
       transition={{ duration: 0.6 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? "py-3 bg-[#0a0f1a]/90 backdrop-blur-xl border-b border-white/5"
+          ? "py-3 bg-white/95 backdrop-blur-xl border-b border-neutral-200 shadow-sm"
           : "py-6 bg-transparent"
       }`}
     >
@@ -64,7 +64,7 @@ export default function Header() {
               >
                 <Link
                   href={item.href}
-                  className="relative px-5 py-2 text-white/70 hover:text-white text-sm font-medium transition-colors group"
+                  className="relative px-5 py-2 text-neutral-600 hover:text-neutral-900 text-sm font-medium transition-colors group"
                 >
                   {item.name}
                   <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#E91E8C] to-[#00A3E0] group-hover:w-full transition-all duration-300" />
@@ -96,7 +96,7 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden relative z-10 p-2 text-white"
+            className="md:hidden relative z-10 p-2 text-neutral-800"
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -110,7 +110,7 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden absolute top-full left-0 right-0 bg-[#0a0f1a]/95 backdrop-blur-xl border-b border-white/5"
+            className="md:hidden absolute top-full left-0 right-0 bg-white/98 backdrop-blur-xl border-b border-neutral-200 shadow-lg"
           >
             <nav className="container max-w-7xl mx-auto px-6 py-6 flex flex-col gap-2">
               {navItems.map((item, i) => (
@@ -123,7 +123,7 @@ export default function Header() {
                   <Link
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 rounded-lg text-sm font-medium transition-colors"
+                    className="block px-4 py-3 text-neutral-600 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg text-sm font-medium transition-colors"
                   >
                     {item.name}
                   </Link>

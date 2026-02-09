@@ -105,7 +105,7 @@ const ProductCard = ({ product, index, onClick }: { product: Product; index: num
           />
           
           {/* Gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1a] via-transparent to-transparent opacity-60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-60" />
           
           {/* Category badge */}
           <div 
@@ -130,10 +130,10 @@ const ProductCard = ({ product, index, onClick }: { product: Product; index: num
 
         {/* Content */}
         <div className="relative p-6">
-          <h3 className="text-xl font-bold text-white mb-2 group-hover:text-gradient transition-all">
+          <h3 className="text-xl font-bold text-neutral-900 mb-2 group-hover:text-gradient transition-all">
             {product.name}
           </h3>
-          <p className="text-white/50 text-sm line-clamp-2 mb-4">
+          <p className="text-neutral-500 text-sm line-clamp-2 mb-4">
             {product.description}
           </p>
           
@@ -142,7 +142,7 @@ const ProductCard = ({ product, index, onClick }: { product: Product; index: num
             {product.features.slice(0, 2).map((feature, i) => (
               <span
                 key={i}
-                className="px-3 py-1 rounded-full text-xs text-white/70 glass"
+                className="px-3 py-1 rounded-full text-xs text-neutral-600 bg-neutral-100 border border-neutral-200"
               >
                 {feature}
               </span>
@@ -174,7 +174,7 @@ export default function Products() {
     : products.filter((p) => p.category === activeCategory);
 
   return (
-    <section id="products" ref={sectionRef} className="py-32 bg-[#0a0f1a] relative overflow-hidden">
+    <section id="products" ref={sectionRef} className="py-32 bg-neutral-50 relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#E91E8C]/5 rounded-full blur-[150px]" />
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[#00A3E0]/5 rounded-full blur-[150px]" />
@@ -193,15 +193,15 @@ export default function Products() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
           >
             <Sparkles className="w-4 h-4 text-[#FFD700]" />
-            <span className="text-white/70 text-sm">Notre Excellence</span>
+            <span className="text-neutral-500 text-sm">Notre Excellence</span>
           </motion.div>
 
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6">
-            <span className="text-white">Nos </span>
+            <span className="text-neutral-900">Nos </span>
             <span className="text-gradient">Produits</span>
           </h2>
           
-          <p className="text-white/50 text-lg max-w-2xl mx-auto">
+          <p className="text-neutral-500 text-lg max-w-2xl mx-auto">
             Une gamme complète née de l&apos;expertise algérienne. 
             Chaque produit est le fruit de 20 ans d&apos;innovation.
           </p>
@@ -222,8 +222,8 @@ export default function Products() {
               whileTap={{ scale: 0.95 }}
               className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
                 activeCategory === category
-                  ? "bg-gradient-to-r from-[#E91E8C] to-[#00A3E0] text-white"
-                  : "glass text-white/70 hover:text-white hover:bg-white/10"
+                  ? "bg-gradient-to-r from-[#E91E8C] to-[#00A3E0] text-white shadow-md"
+                  : "bg-white border border-neutral-200 text-neutral-600 hover:text-neutral-900 hover:border-neutral-300 shadow-sm"
               }`}
             >
               {category}
@@ -260,7 +260,7 @@ export default function Products() {
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-4xl glass-strong rounded-3xl overflow-hidden"
+                className="relative w-full max-w-4xl bg-white rounded-3xl overflow-hidden shadow-2xl border border-neutral-200"
               >
                 <div className="grid md:grid-cols-2">
                   {/* Image */}
@@ -281,7 +281,7 @@ export default function Products() {
                   <div className="p-8 md:p-10">
                     <button
                       onClick={() => setSelectedProduct(null)}
-                      className="absolute top-4 right-4 w-10 h-10 rounded-full glass flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+                      className="absolute top-4 right-4 w-10 h-10 rounded-full bg-neutral-100 border border-neutral-200 flex items-center justify-center text-neutral-600 hover:bg-neutral-200 transition-colors"
                     >
                       <X className="w-5 h-5" />
                     </button>
@@ -293,15 +293,15 @@ export default function Products() {
                       {selectedProduct.category}
                     </span>
 
-                    <h2 className="text-3xl font-bold text-white mb-4">
+                    <h2 className="text-3xl font-bold text-neutral-900 mb-4">
                       {selectedProduct.name}
                     </h2>
 
-                    <p className="text-white/60 mb-8 leading-relaxed">
+                    <p className="text-neutral-500 mb-8 leading-relaxed">
                       {selectedProduct.description}
                     </p>
 
-                    <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
+                    <h3 className="text-neutral-900 font-semibold mb-4 flex items-center gap-2">
                       <Zap className="w-5 h-5 text-[#FFD700]" />
                       Caractéristiques
                     </h3>
@@ -315,7 +315,7 @@ export default function Products() {
                           >
                             <Check className="w-4 h-4" style={{ color: selectedProduct.color }} />
                           </div>
-                          <span className="text-white/70">{feature}</span>
+                          <span className="text-neutral-600">{feature}</span>
                         </div>
                       ))}
                     </div>

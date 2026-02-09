@@ -1,8 +1,11 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion, useInView, useSpring, useTransform } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { Factory, FlaskConical, Truck, Award, Users, MapPin } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const AlgeriaMap = dynamic(() => import("@/components/AlgeriaMap"), { ssr: false });
 
 // Animated counter component
 const AnimatedCounter = ({ value, suffix = "", duration = 2 }: { value: number; suffix?: string; duration?: number }) => {
@@ -33,86 +36,6 @@ const AnimatedCounter = ({ value, suffix = "", duration = 2 }: { value: number; 
   );
 };
 
-// Algeria map SVG component (simplified)
-const AlgeriaMap = () => {
-  const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
-  
-  const regions = [
-    { id: "center", name: "Centre", x: 120, y: 80 },
-    { id: "east", name: "Est", x: 180, y: 90 },
-    { id: "west", name: "Ouest", x: 60, y: 85 },
-    { id: "south", name: "Sud", x: 120, y: 160 },
-  ];
-
-  return (
-    <div className="relative w-full max-w-md mx-auto">
-      <svg viewBox="0 0 250 220" className="w-full h-auto">
-        {/* Simplified Algeria outline */}
-        <motion.path
-          d="M30,50 L50,30 L100,25 L150,30 L200,40 L220,70 L210,100 L200,130 L180,160 L150,190 L120,200 L80,195 L50,170 L35,130 L30,100 L25,70 Z"
-          fill="rgba(233,30,140,0.1)"
-          stroke="rgba(233,30,140,0.5)"
-          strokeWidth="2"
-          initial={{ pathLength: 0, opacity: 0 }}
-          whileInView={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 2 }}
-          viewport={{ once: true }}
-        />
-        
-        {/* Region dots */}
-        {regions.map((region, i) => (
-          <motion.g
-            key={region.id}
-            initial={{ scale: 0, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.5 + i * 0.2 }}
-            viewport={{ once: true }}
-            onMouseEnter={() => setHoveredRegion(region.id)}
-            onMouseLeave={() => setHoveredRegion(null)}
-            className="cursor-pointer"
-          >
-            <motion.circle
-              cx={region.x}
-              cy={region.y}
-              r={hoveredRegion === region.id ? 12 : 8}
-              fill={hoveredRegion === region.id ? "#E91E8C" : "#00A3E0"}
-              animate={{ 
-                scale: hoveredRegion === region.id ? [1, 1.2, 1] : 1,
-              }}
-              transition={{ duration: 0.5, repeat: hoveredRegion === region.id ? Infinity : 0 }}
-            />
-            <motion.circle
-              cx={region.x}
-              cy={region.y}
-              r="20"
-              fill="none"
-              stroke={hoveredRegion === region.id ? "#E91E8C" : "transparent"}
-              strokeWidth="2"
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ 
-                scale: hoveredRegion === region.id ? 1.5 : 0.5, 
-                opacity: hoveredRegion === region.id ? [0.5, 0] : 0 
-              }}
-              transition={{ duration: 1, repeat: Infinity }}
-            />
-          </motion.g>
-        ))}
-      </svg>
-      
-      {/* Region label */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: hoveredRegion ? 1 : 0 }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-2 glass rounded-lg pointer-events-none"
-      >
-        <span className="text-white font-semibold">
-          {regions.find(r => r.id === hoveredRegion)?.name}
-        </span>
-      </motion.div>
-    </div>
-  );
-};
-
 export default function FactorySection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
@@ -132,12 +55,12 @@ export default function FactorySection() {
   ];
 
   return (
-    <section id="factory" ref={sectionRef} className="py-32 bg-gradient-to-b from-[#0a0f1a] via-[#0f1729] to-[#0a0f1a] relative overflow-hidden">
+    <section id="factory" ref={sectionRef} className="py-32 bg-neutral-50 relative overflow-hidden">
       {/* Background grid */}
       <div 
-        className="absolute inset-0 opacity-[0.03]"
+        className="absolute inset-0 opacity-[0.4]"
         style={{
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(0,0,0,0.05) 1px, transparent 0)`,
           backgroundSize: "40px 40px",
         }}
       />
@@ -153,18 +76,18 @@ export default function FactorySection() {
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-neutral-200 shadow-sm mb-6"
           >
             <Factory className="w-4 h-4 text-[#FFD700]" />
-            <span className="text-white/70 text-sm">Notre Puissance Industrielle</span>
+            <span className="text-neutral-500 text-sm">Notre Puissance Industrielle</span>
           </motion.div>
 
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6">
-            <span className="text-white">L&apos;Usine de </span>
+            <span className="text-neutral-900">L&apos;Usine de </span>
             <span className="text-gradient">Brillance</span>
           </h2>
           
-          <p className="text-white/50 text-lg max-w-2xl mx-auto">
+          <p className="text-neutral-500 text-lg max-w-2xl mx-auto">
             Une infrastructure industrielle moderne au service de la qualité. 
             Découvrez ce qui fait de Brilex le leader incontesté.
           </p>
@@ -181,15 +104,15 @@ export default function FactorySection() {
               whileHover={{ y: -5, scale: 1.02 }}
               className="relative group"
             >
-              <div className="glass-strong rounded-2xl p-6 text-center h-full">
+              <div className="bg-white border border-neutral-200 shadow-lg shadow-black/5 rounded-2xl p-6 text-center h-full">
                 {/* Glow effect */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#E91E8C]/10 to-[#00A3E0]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#E91E8C]/5 to-[#00A3E0]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 
                 {/* Icon */}
                 <div className="relative w-14 h-14 mx-auto mb-4">
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#E91E8C] to-[#00A3E0] opacity-20 blur-xl group-hover:opacity-40 transition-opacity" />
-                  <div className="relative w-full h-full rounded-xl bg-gradient-to-r from-[#E91E8C]/20 to-[#00A3E0]/20 flex items-center justify-center">
-                    <stat.icon className="w-7 h-7 text-white" />
+                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#E91E8C] to-[#00A3E0] opacity-10 blur-xl group-hover:opacity-20 transition-opacity" />
+                  <div className="relative w-full h-full rounded-xl bg-gradient-to-r from-[#E91E8C]/10 to-[#00A3E0]/10 flex items-center justify-center">
+                    <stat.icon className="w-7 h-7 text-[#E91E8C]" />
                   </div>
                 </div>
                 
@@ -199,8 +122,8 @@ export default function FactorySection() {
                 </div>
                 
                 {/* Label */}
-                <h3 className="text-white font-semibold mb-1">{stat.label}</h3>
-                <p className="text-white/40 text-sm">{stat.sublabel}</p>
+                <h3 className="text-neutral-900 font-semibold mb-1">{stat.label}</h3>
+                <p className="text-neutral-400 text-sm">{stat.sublabel}</p>
               </div>
             </motion.div>
           ))}
@@ -214,22 +137,24 @@ export default function FactorySection() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <div className="glass-strong rounded-3xl p-8">
+            <div className="bg-white border border-neutral-200 shadow-lg shadow-black/5 rounded-3xl p-8">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-[#E91E8C]/20 to-[#00A3E0]/20 flex items-center justify-center">
-                  <MapPin className="w-5 h-5 text-white" />
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-[#E91E8C]/10 to-[#00A3E0]/10 flex items-center justify-center">
+                  <MapPin className="w-5 h-5 text-[#E91E8C]" />
                 </div>
                 <div>
-                  <h3 className="text-white font-semibold">Couverture Nationale</h3>
-                  <p className="text-white/50 text-sm">48 wilayas desservies</p>
+                  <h3 className="text-neutral-900 font-semibold">Couverture Nationale</h3>
+                  <p className="text-neutral-500 text-sm">48 wilayas desservies</p>
                 </div>
               </div>
               
-              <AlgeriaMap />
+              <div className="h-[300px] rounded-xl overflow-hidden">
+                <AlgeriaMap />
+              </div>
               
               <div className="grid grid-cols-2 gap-4 mt-6">
                 {["Centre", "Est", "Ouest", "Sud"].map((region, i) => (
-                  <div key={i} className="flex items-center gap-2 text-white/60 text-sm">
+                  <div key={i} className="flex items-center gap-2 text-neutral-500 text-sm">
                     <div className="w-2 h-2 rounded-full bg-[#00A3E0]" />
                     {region}
                   </div>
@@ -244,7 +169,7 @@ export default function FactorySection() {
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.5 }}
           >
-            <h3 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+            <h3 className="text-2xl font-bold text-neutral-900 mb-8 flex items-center gap-3">
               <Award className="w-6 h-6 text-[#FFD700]" />
               Notre Parcours
             </h3>
@@ -268,10 +193,10 @@ export default function FactorySection() {
                       whileHover={{ scale: 1.5 }}
                     />
                     
-                    <div className="glass rounded-xl p-4 hover:bg-white/5 transition-colors">
+                    <div className="bg-white border border-neutral-200 shadow-sm rounded-xl p-4 hover:shadow-md transition-shadow">
                       <span className="text-[#FFD700] font-bold">{milestone.year}</span>
-                      <h4 className="text-white font-semibold mt-1">{milestone.title}</h4>
-                      <p className="text-white/50 text-sm mt-1">{milestone.desc}</p>
+                      <h4 className="text-neutral-900 font-semibold mt-1">{milestone.title}</h4>
+                      <p className="text-neutral-500 text-sm mt-1">{milestone.desc}</p>
                     </div>
                   </motion.div>
                 ))}

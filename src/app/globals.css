@@ -14,8 +14,8 @@ html {
 }
 
 body {
-  background: #0a0f1a;
-  color: #ffffff;
+  background: #ffffff;
+  color: #1a1a2e;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
@@ -26,7 +26,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0f1a;
+  background: #f5f5f5;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -36,21 +36,21 @@ body {
 
 /* Selection */
 ::selection {
-  background: rgba(233, 30, 140, 0.3);
-  color: #fff;
+  background: rgba(233, 30, 140, 0.2);
+  color: #1a1a2e;
 }
 
 /* Glow effects */
 .glow-pink {
-  box-shadow: 0 0 40px rgba(233, 30, 140, 0.4);
+  box-shadow: 0 0 40px rgba(233, 30, 140, 0.2);
 }
 
 .glow-blue {
-  box-shadow: 0 0 40px rgba(0, 163, 224, 0.4);
+  box-shadow: 0 0 40px rgba(0, 163, 224, 0.2);
 }
 
 .glow-gold {
-  box-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.2);
 }
 
 /* Text gradient */
@@ -75,7 +75,7 @@ body {
 }
 
 .shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.03), transparent);
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
@@ -108,13 +108,15 @@ body {
 
 /* Glass effect */
 .glass {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(30px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
